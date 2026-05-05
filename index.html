@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Y Nikhil Arts — Artfolio (Premium Motion)</title>
+  <meta name="description" content="Premium art portfolio with neon hero, parallax, motion, gallery and commissions." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#05060a; --card:rgba(255,255,255,0.04); --muted:#9aa4b2; --accent1:#46A0FF; --accent2:#FF5CDE; --neon:#00ffd5;
+      --glass:rgba(255,255,255,0.04);
+    }
+    body.light{ --bg:#f7f8fb; --card:rgba(0,0,0,0.04); --muted:#475569; }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Inter, Poppins, system-ui; background:linear-gradient(180deg,var(--bg), #071023); color:#fff; -webkit-font-smoothing:antialiased; }
+
+    /* ---------- TOP BAR ---------- */
+    header{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:18px 36px; gap:18px; backdrop-filter: blur(8px); background:linear-gradient(180deg, rgba(0,0,0,0.28), transparent);}
+    .brand{display:flex; align-items:center; gap:14px}
+    .logo{font-family:Orbitron, monospace; font-weight:800; font-size:20px; letter-spacing:1px; background:linear-gradient(90deg,var(--accent2),var(--accent1)); -webkit-background-clip:text; -webkit-text-fill-color: transparent; cursor:pointer; transform:translateY(0); transition:transform .28s ease, filter .28s ease;}
+    .logo:hover{transform:translateY(-6px) rotate(-1deg); filter:drop-shadow(0 10px 30px rgba(70,160,255,0.25));}
+    nav{display:flex; align-items:center; gap:20px}
+    nav a{color:inherit; text-decoration:none; font-weight:600; opacity:0.9; padding:8px 10px; border-radius:8px; transition:transform .25s ease, background .25s ease, color .25s ease;}
+    nav a:hover{transform:translateY(-6px) scale(1.03); background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));}
+    .toggle{padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.06); cursor:pointer; display:inline-flex; align-items:center; gap:8px}
+
+    /* ---------- HERO (3D gradient + neon) ---------- */
+    .hero-wrap{height:88vh; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden}
+    .parallax-layer{position:absolute; inset:0; background-position:center; background-size:cover; transform-origin:center; will-change:transform;}
+    .hero-gradient{position:absolute; inset:0; background:radial-gradient(ellipse at 20% 30%, rgba(255,92,222,0.12), transparent 10%), radial-gradient(ellipse at 85% 70%, rgba(70,160,255,0.12), transparent 10%); mix-blend-mode:screen; pointer-events:none}
+    .hero-inner{position:relative; z-index:30; display:flex; align-items:center; justify-content:space-between; gap:40px; width:100%; max-width:1200px; padding:40px}
+
+    .hero-text{flex:1; min-width:260px}
+    .kicker{display:inline-block; padding:8px 14px; border-radius:999px; background:rgba(255,255,255,0.03); color:var(--muted); margin-bottom:18px}
+    h1{font-family:"Bebas Neue", sans-serif; font-size:64px; line-height:0.9; margin:0 0 12px; letter-spacing:1px; background: linear-gradient(90deg, #fff, var(--neon)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow: 0 6px 40px rgba(0,255,213,0.06); transform:translateZ(0);}
+    p.lead{color:var(--muted); max-width:640px; margin-bottom:20px}
+    .cta{display:flex; gap:12px}
+    .btn{padding:12px 18px; border-radius:12px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:10px;}
+    .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2)); color:#fff; box-shadow: 0 10px 30px rgba(70,160,255,0.12);}
+    .btn-ghost{background:transparent; border:1px solid rgba(255,255,255,0.06); color:inherit}
+
+    /* floating shapes */
+    .shape{position:absolute; border-radius:50%; filter:blur(30px); opacity:0.7; animation: floaty 8s infinite ease-in-out; pointer-events:none}
+    .shape.s1{width:360px; height:360px; right:-80px; top:10%; background:linear-gradient(90deg,var(--accent1),var(--accent2));}
+    .shape.s2{width:240px; height:240px; left:-60px; bottom:5%; background:linear-gradient(90deg,var(--accent2),var(--accent1)); animation-duration:10s}
+    @keyframes floaty{0%{transform:translateY(0) translateX(0)}50%{transform:translateY(-26px) translateX(6px)}100%{transform:translateY(0) translateX(0)}}
+
+    /* hero art preview */
+    .hero-preview{width:620px; border-radius:18px; overflow:hidden; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.2,.9,.2,1);}
+    .hero-preview img{width:690px; height:500px; object-fit:cover; display:block}
+    .hero-preview:hover{transform:translateY(-14px) rotateY(6deg) scale(1.02); box-shadow:0 40px 120px rgba(2,6,23,0.7)}
+
+    /* ---------- SECTIONS ---------- */
+    section{padding:80px 20px}
+    .container{max-width:1200px; margin:0 auto}
+
+    /* gallery masonry */
+    .masonry{display:grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap:18px}
+    .item{position:relative; overflow:hidden; border-radius:14px; background:var(--card); cursor:pointer; transition:transform .38s cubic-bezier(.2,.9,.2,1), box-shadow .38s}
+    .item img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease}
+    .item:hover{transform:translateY(-12px)}
+    .item:hover img{transform:scale(1.12) rotate(.7deg)}
+    .meta{position:absolute; left:12px; bottom:12px; background:linear-gradient(90deg, rgba(0,0,0,0.5), transparent); padding:8px 12px; border-radius:999px; color:#fff; font-weight:700}
+
+    /* lightbox */
+    .lightbox{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(2,6,23,0.7); z-index:9999; visibility:hidden; opacity:0; transition:opacity .18s ease}
+    .lightbox.open{visibility:visible; opacity:1}
+    .lightbox img{max-width:92%; max-height:86%; border-radius:12px}
+    .lb-close{position:absolute; right:24px; top:24px; background:rgba(255,255,255,0.04); border-radius:10px; padding:8px}
+
+    /* pricing cards */
+    .pricing-grid{display:flex; gap:18px; flex-wrap:wrap; justify-content:center}
+    .price-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:22px; border-radius:14px; min-width:220px; text-align:center; transition:transform .28s ease}
+    .price-card:hover{transform:translateY(-10px) scale(1.03); box-shadow:0 30px 80px rgba(0,0,0,0.5)}
+    .price-card h3{margin-bottom:6px}
+    .price-card p{color:var(--muted); margin:6px 0}
+
+    /* contact */
+    form{display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:900px; margin:12px auto}
+    input, textarea{padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit}
+    .actions{grid-column:1/3; display:flex; gap:12px}
+
+    /* responsive tweaks */
+    @media (max-width:920px){ h1{font-size:40px} .hero-inner{flex-direction:column; align-items:center} .hero-preview{width:320px} }
+    @media (max-width:520px){ header{padding:12px 16px} h1{font-size:32px} .masonry{grid-template-columns:repeat(2,1fr)} form{grid-template-columns:1fr} .actions{grid-column:1/2} }
+
+    a, button{ text-decoration:none; outline:none }
+    a:focus, button:focus{ box-shadow:0 0 0 3px rgba(70,160,255,0.12); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo" id="logo">ARTFOLIO</div>
+  </div>
+
+  <nav>
+    <a href="#gallery">Gallery</a>
+    <a href="#commissions">Commissions</a>
+    <a href="#profile">Profile</a>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero-wrap">
+  <div class="hero-gradient"></div>
+  <div class="shape s1"></div>
+  <div class="shape s2"></div>
+
+  <div class="hero-inner container">
+    <div class="hero-text">
+      <div class="kicker">Original Drawings & Commissions</div>
+      <h1 id="heroTitle">Y Nikhil Arts</h1>
+      <p class="lead">Vivid portraits, surreal landscapes and custom illustrations. Commissions open — prints & limited editions available.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#commissions">Order Commission</a>
+        <a class="btn btn-ghost" href="#gallery">View Gallery</a>
+      </div>
+      <div style="margin-top:20px; display:flex; gap:12px; opacity:.9">
+        <div style="background:linear-gradient(90deg,var(--accent1),var(--accent2)); padding:8px 12px; border-radius:10px; font-weight:700">Featured</div>
+        <div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:10px;">Limited Prints</div>
+      </div>
+    </div>
+
+    <div class="hero-preview" id="heroPreview">
+      <img src="IMG\rukmini.png" alt="Hero Preview">
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="container">
+  <h2 style="font-size:34px; margin-bottom:12px">Gallery</h2>
+  <div class="masonry" id="masonry">
+    <div class="item" data-src="C:\Users\Dalvin\Desktop\PORT\IMG\chikri.png">
+      <img loading="lazy" src="IMG\chikri.png" alt="Abstract #01">
+      <div class="meta">Peddi</div>
+    </div>
+
+    <div class="item" data-src="C:\Users\Dalvin\Desktop\PORT\IMG\varanasi.png">
+      <img loading="lazy" src="IMG\varanasi.png" alt="Portrait #07">
+      <div class="meta">Varanasi</div>
+    </div>
+
+    <div class="item" data-src="C:\Users\Dalvin\Desktop\PORT\IMG\og.png">
+      <img loading="lazy" src="IMG\og.png" alt="Portrait #08">
+      <div class="meta">OG</div>
+    </div>
+    <div class="item" data-src="C:\Users\Dalvin\Desktop\PORT\IMG\janani.png">
+      <img loading="lazy" src="IMG\Janani.png" alt="Landscape #12">
+      <div class="meta">Janani</div>
+    </div>
+    <div class="item" data-src="C:\Users\Dalvin\Desktop\PORT\IMG\kanthara.png">
+      <img loading="lazy" src="IMG\kanthara.png" alt="Landscape #12">
+      <div class="meta">Rishab Shetty</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMISSIONS & PRICING -->
+<section id="commissions" class="container">
+  <h2 style="font-size:34px; margin-bottom:12px">Commissions & Pricing</h2>
+  <p style="color:var(--muted); margin-bottom:18px">Fill the commission form and I will get back to you within 3 business days.</p>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3>A5</h3>
+      <p>₹399 — Single</p>
+      <p>₹499 — Double</p>
+    </div>
+    <div class="price-card">
+      <h3>A4</h3>
+      <p>₹799 — Single</p>
+      <p>₹899 — Double</p>
+    </div>
+    <div class="price-card">
+      <h3>A3</h3>
+      <p>₹999 — Single Only</p>
+    </div>
+  </div>
+
+  <div style="margin-top:18px; text-align:center">
+    <a class="btn btn-primary" href="https://forms.gle/hn3r5MoTw7pd9Kk56" target="_blank">Open Commission Form</a>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="container">
+  <h2 style="font-size:34px; margin-bottom:12px">Profile</h2>
+  <p style="color:var(--muted);">Y Nikhil Arts <br><br>
+
+I am Y Nikhil, a dedicated portrait artist with over 8 years of experience in drawing, sketching, and professional color pencil artwork. <br><br>
+
+Art has been a part of my life since childhood, and over the years I’ve developed a strong eye for realism, shading, fine detailing, and lifelike expressions. My goal is to make every portrait feel emotional, personal, and visually striking. <br><br>
+
+I specialize in hand-drawn portraits, color pencil artworks, and custom commissions that are crafted with precision and patience. Every piece I create is designed to capture the soul, story, and personality of the subject. <br><br>
+
+With consistent practice and passion, I have built a style that blends realism with smooth color transitions, natural textures, and clean finishing. <br><br>
+
+My Expertise: <br>
+• Realistic Portraits <br>
+• Color Pencil Drawings <br>
+• Charcoal & Graphite Sketches <br>
+• Custom Art Commissions <br>
+• Detailed Shading & Skin Tone Work <br><br>
+
+My Vision: <br>
+To create meaningful portraits that people connect with emotionally, and to continue growing as an artist delivering high-quality, memorable artwork. <br>	</p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="container">
+  <h2 style="font-size:34px; margin-bottom:12px">Contact</h2>
+  <p style="color:var(--muted); margin-bottom:12px">Questions? Bulk orders? Collabs? Drop a message.</p>
+  <form>
+    <input placeholder="Your name">
+    <input placeholder="Email">
+    <textarea placeholder="Message" rows="4"></textarea>
+    <div class="actions">
+      <button class="btn btn-primary" type="button">Send Message</button>
+      <a class="btn btn-ghost" href="tel:+919000000000">Call: +91 90000 00000</a>
+    </div>
+  </form>
+</section>
+
+<footer style="padding:40px 20px; text-align:center; color:var(--muted)">
+  &copy; <span id="year"></span> Y Nikhil Arts · Designed with ❤️
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-hidden="true">
+  <button class="lb-close" id="lbClose">✕</button>
+  <img src="" alt="enlarged">
+</div>
+
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Theme toggle
+  const themeToggle = document.getElementById('themeToggle');
+  const body = document.body;
+  function setTheme(t){ if(t==='light') body.classList.add('light'); else body.classList.remove('light'); localStorage.setItem('yn_theme', t); updateToggle(); }
+  function updateToggle(){ const btn = document.getElementById('themeToggle'); btn.textContent = body.classList.contains('light') ? '🌞 Light' : '🌙 Dark'; }
+  const saved = localStorage.getItem('yn_theme') || 'dark'; setTheme(saved);
+  themeToggle.addEventListener('click', ()=>{ setTheme(body.classList.contains('light') ? 'dark' : 'light'); });
+
+  // Parallax on mouse move
+  const hero = document.querySelector('.hero-wrap');
+  const heroTitle = document.getElementById('heroTitle');
+  const heroPreview = document.getElementById('heroPreview');
+  hero.addEventListener('mousemove', (e)=>{
+    const x = (e.clientX - window.innerWidth/2) / window.innerWidth;
+    const y = (e.clientY - window.innerHeight/2) / window
