@@ -42,7 +42,7 @@ This structured approach helps me maintain **consistency, clarity, and quality**
 ## 🌐 Live Website
 
 🔗 View my artfolio here:
-https://your-netlify-link
+https://ynikhilarts.netlify.app
 
 ## 🛠️ Built With
 
